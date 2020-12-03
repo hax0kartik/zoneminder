@@ -1957,7 +1957,7 @@ void Image::Annotate( const char *p_text, const Coord &coord, const unsigned int
   const Rgb bg_rgb_col = rgb_convert(bg_colour, subpixelorder);
   const bool bg_trans = (bg_colour == RGB_TRANSPARENT);
 
-  font.SetFontSize(size);
+  font.SetFontSize(size - 1);
   const uint16_t char_width = font.GetCharWidth();
   const uint16_t char_height = font.GetCharHeight();
   const uint64_t *font_bitmap = font.GetBitmapData();
@@ -2004,7 +2004,7 @@ void Image::Annotate( const char *p_text, const Coord &coord, const unsigned int
           if ( !bg_trans ) memset(temp_ptr, bg_bw_col, char_width);
           while ( f != 0 ) {
             uint64_t t = f & -f;
-            int idx = char_width - __builtin_ctzll(f>>2);
+            int idx = char_width - __builtin_ctzll(f);
             *(temp_ptr + idx) = fg_bw_col;
             f ^= t;
           }
@@ -2031,7 +2031,7 @@ void Image::Annotate( const char *p_text, const Coord &coord, const unsigned int
             }
             while ( f != 0 ) {
               uint64_t t = f & -f;
-              int idx = char_width - __builtin_ctzll(f >> 2);
+              int idx = char_width - __builtin_ctzll(f);
               RED_PTR_RGBA((temp_ptr + (idx*3))) = fg_r_col;
               GREEN_PTR_RGBA((temp_ptr + (idx*3))) = fg_g_col;
               BLUE_PTR_RGBA((temp_ptr + (idx*3))) = fg_b_col;
@@ -2058,7 +2058,7 @@ void Image::Annotate( const char *p_text, const Coord &coord, const unsigned int
             }
             while ( f != 0 ) {
               uint64_t t = f & -f;
-              int idx = char_width - __builtin_ctzll(f >> 2);
+              int idx = char_width - __builtin_ctzll(f);
               *(temp_ptr + idx) = fg_rgb_col;
               f ^= t;
             }
